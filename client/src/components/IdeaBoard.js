@@ -6,14 +6,14 @@ export default class IdeaBoard extends Component {
     response: {}
   }
 
-  getUsers = () => {
-    axios.get('/api/users')
-      .then(response => console.log(response))
-  }
+  // getUsers = () => {
+  //   axios.get('/api/users')
+  //     .then(response => console.log(response))
+  // }
 
-  componentDidMount = () => {
-    this.getUsers()
-  }
+  // componentDidMount = () => {
+  //   this.getUsers()
+  // }
 
   render() {
     return (
