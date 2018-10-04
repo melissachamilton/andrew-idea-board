@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import styled from 'styled-components'
+
+const StyledIdea = styled.div`
+  background-color: yellow;
+  border: 1px solid black;
+  width: 30vw;
+  min-width: 100px;
+`
 
 export default class IdeaBoard extends Component {
   state = {
@@ -23,10 +31,10 @@ export default class IdeaBoard extends Component {
   render() {
     const ideasList = this.state.ideas.map((idea, i) => {
       return (
-        <div key={i}>
+        <StyledIdea key={i}>
           <div>{idea.title}</div>
           <div>{idea.description}</div>
-        </div>
+        </StyledIdea>
       )
     })
 
