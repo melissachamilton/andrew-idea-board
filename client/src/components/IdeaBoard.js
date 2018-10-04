@@ -3,13 +3,17 @@ import axios from 'axios'
 
 export default class IdeaBoard extends Component {
   state = {
-    user: {}
+    user: {},
+    ideas: []
   }
 
   getUser = async () => {
     const userId = this.props.match.params.userId
     const response = await axios.get(`/api/users/${userId}`)
-    this.setState({ user: response.data })
+    this.setState({
+      user: response.data,
+      ideas: response.data.ideas
+    })
   }
 
   componentDidMount = () => {
@@ -17,9 +21,19 @@ export default class IdeaBoard extends Component {
   }
 
   render() {
+    const ideasList = this.state.ideas.map((idea, i) => {
+      return (
+        <div key={i}>
+          <div>{idea.title}</div>
+          <div>{idea.description}</div>
+        </div>
+      )
+    })
+
     return (
       <div>
         <h1>Idea Board for {this.state.user.userName}</h1>
+        {ideasList}
       </div>
     )
   }
