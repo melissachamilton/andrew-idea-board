@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { StyledLink } from './SharedComponents'
 
 export default class Login extends Component {
   state = {
@@ -34,9 +34,9 @@ export default class Login extends Component {
     const usersList = this.state.users.map((user, i) => {
       return (
         <div>
-          <Link to={`/users/${user._id}`} key={i}>
+          <StyledLink to={`/users/${user._id}`} key={i}>
             Name: {user.userName}
-          </Link>
+          </StyledLink>
         </div>
       )
     })
