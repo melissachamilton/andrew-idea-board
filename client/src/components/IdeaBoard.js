@@ -34,6 +34,7 @@ const StyledIdeaContainer = styled.div`
   justify-content: space-evenly;
   width: 70vw;
   padding: 10px;
+  flex-wrap: wrap;
 `
 
 const StyledIdea = styled.div`
@@ -41,6 +42,7 @@ const StyledIdea = styled.div`
   width: 150px;
   padding: 15px;
   padding-top: 0px;
+  margin: 20px;
 `
 
 export default class IdeaBoard extends Component {
@@ -54,7 +56,7 @@ export default class IdeaBoard extends Component {
     const response = await axios.get(`/api/users/${userId}`)
     this.setState({
       user: response.data,
-      ideas: response.data.ideas
+      ideas: response.data.ideas.reverse()
     })
   }
 
@@ -64,17 +66,44 @@ export default class IdeaBoard extends Component {
 
   handleNew = async () => {
     const userId = this.props.match.params.userId
-    const newIdea = await axios.post(`/api/users/${userId}/ideas`)
-    console.log(newIdea)
+    await axios.post(`/api/users/${userId}/ideas`)
+    await this.getUser()
+  }
+
+  handleDelete = async (ideaId) => {
+    const userId = this.props.match.params.userId
+    await axios.delete(`/api/users/${userId}/ideas/${ideaId}`)
+    await this.getUser()
+  }
+
+  handleChange = (event, i) => {
+    //take it out
+    const ideas = [...this.state.ideas]
+    //change it
+    ideas[i][event.target.name] = event.target.value
+    //put it back
+    this.setState({ ideas })
+  }
+
+  updateIdea = async (i) => {
+    const userId = this.props.match.params.userId
+    const updatedIdea = this.state.ideas[i]
+    await axios.put(`/api/users/${userId}/ideas/${updatedIdea._id}`, updatedIdea)
   }
 
   render() {
     const ideasList = this.state.ideas.map((idea, i) => {
       return (
         <StyledIdea key={i}>
-          <div>X</div>
-          <h4>{idea.title}</h4>
-          <div>{idea.description}</div>
+          <div onClick={() => this.handleDelete(idea._id)}> X </div>
+
+          <input type='text' name='title' value={idea.title}
+            onChange={(event) => this.handleChange(event, i)}
+            onBlur={() => this.updateIdea(i)} />
+
+          <input type='text' name='description' value={idea.description}
+            onChange={(event) => this.handleChange(event, i)}
+            onBlur={() => this.updateIdea(i)} />
         </StyledIdea>
       )
     })
