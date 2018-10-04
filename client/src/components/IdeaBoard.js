@@ -62,6 +62,12 @@ export default class IdeaBoard extends Component {
     this.getUser()
   }
 
+  handleNew = async () => {
+    const userId = this.props.match.params.userId
+    const newIdea = await axios.post(`/api/users/${userId}/ideas`)
+    console.log(newIdea)
+  }
+
   render() {
     const ideasList = this.state.ideas.map((idea, i) => {
       return (
@@ -77,7 +83,7 @@ export default class IdeaBoard extends Component {
       <StyledPageWrapper>
         <h1>Idea Board for {this.state.user.userName}</h1>
         <StyledIdeaMenu>
-          <StyledNewIdea>New Idea</StyledNewIdea>
+          <StyledNewIdea onClick={this.handleNew}>New Idea</StyledNewIdea>
           <TempItem>Thing to Sort</TempItem>
           <TempItem>Thing to Use Sometimes</TempItem>
         </StyledIdeaMenu>
