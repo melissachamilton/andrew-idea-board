@@ -1,3 +1,4 @@
+// Importing tools needed, styling the page, and exporting the page so I can use it with other files.
 import React, { Component } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
@@ -46,30 +47,39 @@ const StyledIdea = styled.div`
 `
 
 export default class IdeaBoard extends Component {
+//  Setting the state as the object user and the idea array.  
   state = {
     user: {},
     ideas: []
   }
 
+  // promise and then statement for getting the user details.
   getUser = async () => {
+    // Setting the constat userID so we can call it in the response.  This is referencing the User. Props means a property of the user.  Match is the property. Params is a term for look through match and return the UserID.
     const userId = this.props.match.params.userId
+    // Answer to the promise which will retrieve the users/userID page and set the state there as the response and ideas. 
     const response = await axios.get(`/api/users/${userId}`)
     this.setState({
       user: response.data,
+      // ideas is the userID array of ideas.  Reverse rearranges the order of the information in the array.
       ideas: response.data.ideas.reverse()
     })
   }
 
+  // HELP>>>>  I think we are loading the same user as above.  This just states after the component page loads get the user data.  It's the prep statement for the actions above.
   componentDidMount = () => {
     this.getUser()
   }
 
+  // this is defining what happens with the new idea.  Question: Not sure why we set user ID again.  Is it the same one as above? 
   handleNew = async () => {
     const userId = this.props.match.params.userId
+    // post the new idea to the user/userId/ideas page.
     await axios.post(`/api/users/${userId}/ideas`)
     await this.getUser()
   }
 
+  // Defining how to handle the deleted idea by removing the idea from users/userID/ideas/ideaID.
   handleDelete = async (ideaId) => {
     const userId = this.props.match.params.userId
     await axios.delete(`/api/users/${userId}/ideas/${ideaId}`)
