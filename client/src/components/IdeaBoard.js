@@ -86,18 +86,23 @@ export default class IdeaBoard extends Component {
     await this.getUser()
   }
 
+  // Question:  Where is event defined? Handle the change event which is where we changed the actual idea.  Just not sure where we defined it.
   handleChange = (event, i) => {
-    //take it out
+    //take the existing idea that is currently in state.
     const ideas = [...this.state.ideas]
-    //change it
+    //change it to a new idea.  HELP>>>>  Think this is saying cycle through the ideas and pick a particular one and then make it equal to the value which is the actual string of words in the idea.
     ideas[i][event.target.name] = event.target.value
-    //put it back
+    //make new idea your new state.
     this.setState({ ideas })
   }
 
+  // Question: is the same idea that is in the home state? 
   updateIdea = async (i) => {
+    // Seem to use the define the same userId again.  Why?
     const userId = this.props.match.params.userId
+    // Setting the updatedIdea to mean iterate through the ideas in the state.
     const updatedIdea = this.state.ideas[i]
+    // Defining where to put the new idea HELP >>>> explanation of items after /ideas. 
     await axios.put(`/api/users/${userId}/ideas/${updatedIdea._id}`, updatedIdea)
   }
 
